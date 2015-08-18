@@ -51,7 +51,7 @@ public class PTalkPanel extends JPanel implements Observer, PTalkEventListener {
         try {
             initComponents();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(ex);
             this.timerString.setText("Error initializing Applet");
         }
         
@@ -66,23 +66,30 @@ public class PTalkPanel extends JPanel implements Observer, PTalkEventListener {
             // Connect! this handles all the handsahking
             acceptor.connect();
             
-            // Start our sample timer - in this sample we're buying time            
-            // sample timer callback
-            timer.addObserver(this);
-            
-            // acceptor callback - handle credit events
-            acceptor.addChangeListener(this);
-            
-            // Sample timer runs on its own thread
-            timerThread = new Thread(timer);
-            timerThread.start();
-
+            // Initialize and start the acceptor outside the constructor
+            // to avoid leaking this instance details.
+            init();
+           
         } catch (PyramidDeviceException ex) {
             logger.error("Error connecting to Pyramid Acceptor", ex);
             this.timerString.setText("Error connecting to Pyramid Acceptor");
         }
 
     }   
+    
+    private void init() {
+        // Start our sample timer - in this sample we're buying time            
+        // sample timer callback
+        timer.addObserver(this);
+
+        // acceptor callback - handle credit events
+        acceptor.addChangeListener(this);
+
+        // Sample timer runs on its own thread
+        timerThread = new Thread(timer);
+        timerThread.start();
+
+    }
     
     /**
      * Disconnect the slave device
@@ -135,6 +142,7 @@ public class PTalkPanel extends JPanel implements Observer, PTalkEventListener {
         }
     }
     class PTalkTimer extends Observable implements Runnable {
+        private Logger logger = Logger.getLogger(PTalkTimer.class.getName());
 
         final String timerString = "%s years, %s hours, %s days, %s minutes, "
                 + "%s seconds until you are out of time";
@@ -162,6 +170,7 @@ public class PTalkPanel extends JPanel implements Observer, PTalkEventListener {
             return this.message;
         }
 
+        @Override
         public void run() {
 
             while (!_stopThread) {
@@ -398,10 +407,10 @@ public class PTalkPanel extends JPanel implements Observer, PTalkEventListener {
                 analysisText.append(it.next().toString() + "\n");
             }
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+        } catch (MalformedURLException e) {       
+            logger.error(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         
         isAnalyzing = false;
@@ -419,6 +428,7 @@ public class PTalkPanel extends JPanel implements Observer, PTalkEventListener {
     }
 
     // Note: this comparator imposes orderings that are inconsistent with equals.    
+        @Override
     public int compare(String a, String b) {
         if (base.get(a) >= base.get(b)) {
             return -1;
