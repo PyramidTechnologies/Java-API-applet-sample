@@ -27,8 +27,10 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
+
+
 import javax.swing.JPanel;
 import org.jsoup.Jsoup;
 
@@ -37,6 +39,7 @@ import org.jsoup.Jsoup;
  * @author Cory Todd <cory@pyramidacceptors.com>
  */
 public class PTalkPanel extends JPanel implements Observer, PTalkEventListener {
+    private Logger logger = Logger.getLogger(PTalkPanel.class.getName());
 
     private Thread timerThread;
     private PTalkTimer timer = new PTalkTimer();
@@ -54,8 +57,12 @@ public class PTalkPanel extends JPanel implements Observer, PTalkEventListener {
         
         try {
             
-            // Create instance of bill acceptor
-            acceptor = PyramidAcceptor.valueOfRS232();
+            // Create instance of bill acceptor (auto-detect)
+            // acceptor = PyramidAcceptor.valueOfRS232();
+            
+            // Or manually select
+            acceptor = PyramidAcceptor.valueOfRS232("COM4");
+            
             // Connect! this handles all the handsahking
             acceptor.connect();
             
@@ -71,7 +78,7 @@ public class PTalkPanel extends JPanel implements Observer, PTalkEventListener {
             timerThread.start();
 
         } catch (PyramidDeviceException ex) {
-            Logger.getLogger(PTalkPanel.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error("Error connecting to Pyramid Acceptor", ex);
             this.timerString.setText("Error connecting to Pyramid Acceptor");
         }
 
@@ -205,7 +212,7 @@ public class PTalkPanel extends JPanel implements Observer, PTalkEventListener {
                     // Sleep for a second
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
-                    Logger.getLogger("Timer").log(Level.WARNING, "Thread interrupted");
+                    logger.error("Thread interrupted", e);
                 }
             }
         }
