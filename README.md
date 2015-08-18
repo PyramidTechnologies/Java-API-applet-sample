@@ -19,7 +19,17 @@ you can quickly configure your application to operate with a bill validator. Thi
 4. A copy of [PTalk.jar](https://github.com/PyramidTechnologies/jPyramid-RS-232/releases)
 
 ## Setup
-If you are using Netbeans, simply open the project and satisfy the PTalk.jar dependency. You will then be able to run and debug the application. Step 3, profit.
+If you are using Netbeans, simply open the project and satisfy the PTalk and jsoup dependencies. You will then be able to run and debug the application.
+
+If you are using Intellij, the project should import and handle all of the depency stuff for you via gradle.
+
+## Dependencies
+If you prefer to handle your own depencies, here is what you will need
+
+ 1. The ptalk.jar file from this project (which itself include its bundled dependencies)
+ 2. jsoup 1.7.3
+ 3. (Already in PTalk) jSSC latest
+ 4. (Already in PTalk) Apache commons-collection 4.4+
 
 ## Questions
 Please [let us know](https://github.com/PyramidTechnologies/Java-API-applet-sample/issues/new).
