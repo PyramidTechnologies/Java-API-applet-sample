@@ -8,7 +8,7 @@ import javax.swing.UIManager;
 
 /**
  *
- * @author scream3r
+ * @author cory
  */
 public class Main extends JApplet {
 

@@ -5,7 +5,7 @@
  */
 package com.pyramidacceptors.ptalk.applet;
 
-import com.pyramidacceptors.ptalk.api.APIConstants.BillNames;
+import com.pyramidacceptors.ptalk.api.BillNames;
 import com.pyramidacceptors.ptalk.api.PyramidAcceptor;
 import com.pyramidacceptors.ptalk.api.PyramidDeviceException;
 import com.pyramidacceptors.ptalk.api.event.CreditEvent;
