@@ -1,6 +1,8 @@
 Java API Applet Example
 =========
 
+*This is a deprecated technology. Do not use Applets for new development*.
+
 Sample application utilizing the Pyramid Java API for Pyramid bill validators. With this API
 you can quickly configure your application to operate with a bill validator. This application shows RS-232 state transition and reports the denomination of accepted notes. It also demonstrates an application were you may sell access to service for a period of time. Time is added by inserting more money into the bill validator. 
   
